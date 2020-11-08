@@ -6,10 +6,10 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 
 public class SeleniumTest {
+  private WebDriver driver;
   @Test
   public void canLaunchWebDriver() {
 	  //Arrange
-	  WebDriver driver = new ChromeDriver();
 	  String url = "https://www.google.com/";
 	  
 	  //Act
@@ -21,10 +21,12 @@ public class SeleniumTest {
   }
   @BeforeTest
   public void beforeTest() {
+	  driver = new ChromeDriver();
   }
 
   @AfterTest
   public void afterTest() {
+	  driver.quit();
   }
 
 }
