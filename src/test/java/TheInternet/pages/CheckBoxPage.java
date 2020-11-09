@@ -1,5 +1,7 @@
 package TheInternet.pages;
 
+import java.util.ArrayList;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,17 +20,24 @@ public class CheckBoxPage extends PageObjectBase{
 	}
 
 	//driver.findElement(By.id("idOfTheElement")).click();
-	public CheckBoxPage setCheckBox() {
-		WebElement checkBoxElement = driver.findElement(By.xpath("//*[@id='checkboxes']/input"));
-		CheckBox checkBoxWrapped = new CheckBox(checkBoxElement);
-		checkBoxWrapped.setBox();
+	public CheckBoxPage setCheckboxes() {
+		ArrayList<WebElement> checkBoxElements = (ArrayList<WebElement>) driver.findElements(By.xpath("//*[@id='checkboxes']/input"));
+		for(WebElement element : checkBoxElements) {
+			CheckBox checkBoxWrapped = new CheckBox(element);
+			checkBoxWrapped.setBox();
+		}
+		
 		return this;
 	}
 
-	public Boolean getCheckBox() {
-		WebElement checkBoxElement = driver.findElement(By.xpath("//*[@id='checkboxes']/input"));
-		CheckBox checkBoxWrapped = new CheckBox(checkBoxElement);
-		return checkBoxWrapped.getBox();
+	public Boolean areCheckboxesSet() {
+		ArrayList<WebElement> checkBoxElements = (ArrayList<WebElement>) driver.findElements(By.xpath("//*[@id='checkboxes']/input"));
+		boolean allChecked = true;
+		for(WebElement element : checkBoxElements) {
+			CheckBox checkBoxWrapped = new CheckBox(element);
+			allChecked&=checkBoxWrapped.getBox();
+		}
+		return allChecked;
 	}
 
 }

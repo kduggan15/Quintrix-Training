@@ -18,8 +18,8 @@ public class CheckboxTest extends TestBase{
 		  //Act
 		  Boolean actualValue = new CheckBoxPage(driver, url)
 				  .navigate()
-				  .setCheckBox()
-				  .getCheckBox();
+				  .setCheckboxes()
+				  .areCheckboxesSet();
 		  Assert.assertEquals(actualValue, expectedValue);
 	  }
   @BeforeTest
