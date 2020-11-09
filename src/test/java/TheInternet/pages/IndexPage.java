@@ -1,3 +1,5 @@
+package TheInternet.pages;
+
 import org.openqa.selenium.WebDriver;
 
 public class IndexPage {

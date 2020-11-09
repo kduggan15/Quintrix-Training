@@ -1,6 +1,11 @@
+package TheInternet.pages;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import TheInternet.foundation.PageObjectBase;
+import TheInternet.controls.Input;
 
 public class InputPage extends PageObjectBase{
 

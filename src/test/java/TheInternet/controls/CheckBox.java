@@ -1,3 +1,5 @@
+package TheInternet.controls;
+
 import org.openqa.selenium.WebElement;
 
 public class CheckBox {

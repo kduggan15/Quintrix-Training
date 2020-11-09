@@ -1,8 +1,10 @@
-
+package TheInternet.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import TheInternet.foundation.PageObjectBase;
+import TheInternet.controls.CheckBox;
 
 public class CheckBoxPage extends PageObjectBase{
 
