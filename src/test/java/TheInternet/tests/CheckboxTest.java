@@ -13,10 +13,9 @@ public class CheckboxTest extends TestBase{
 	  @Test
 	  public void canCheckBoxes() {
 		  //Arrange
-		  String url = "https://the-internet.herokuapp.com/";
 		  Boolean expectedValue = true;
 		  //Act
-		  Boolean actualValue = new CheckBoxPage(driver, url)
+		  Boolean actualValue = new CheckBoxPage(driver, baseURL)
 				  .navigate()
 				  .setCheckboxes()
 				  .areCheckboxesSet();
