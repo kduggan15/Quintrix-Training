@@ -13,10 +13,10 @@ public class APITests {
   public void verifiesUser2IsJanet() {
 	  given()
 	  .when()
-	  .get("https://reqres.in/api/users/2")
+	  	.get("https://reqres.in/api/users/2")
 	  .then()
-	  .assertThat()
-	  .body("data.email", equalTo("janet.weaver@reqres.in"));
+	  	.assertThat()
+	  	.body("data.email", equalTo("janet.weaver@reqres.in"));
   }
   
   @Test
@@ -29,6 +29,27 @@ public class APITests {
 	  .then()
 	  	.assertThat()
 	  	.statusCode(200);
+  }
+  
+  @Test
+  public void verifiesDelete() {
+	  given()
+	  .when()
+	  	.delete("https://reqres.in/api/users/2")
+	  .then()
+	  	.assertThat()
+	  	.statusCode(204);
+  }
+  
+  @Test
+  public void verfiesCanUpdateMorpheus() {
+	  given()
+	  .when()
+	  	.patch("https://reqres.in/api/users/2")
+	  .then()
+	  	.assertThat()
+	  	.statusCode(200)
+	  	.body("updatedAt", containsString(""));
   }
   
   @BeforeTest
