@@ -19,6 +19,7 @@ public class CheckboxTest extends TestBase{
 				  .navigate()
 				  .setCheckboxes()
 				  .areCheckboxesSet();
+		  //Assert
 		  Assert.assertEquals(actualValue, expectedValue);
 	  }
   @BeforeTest
