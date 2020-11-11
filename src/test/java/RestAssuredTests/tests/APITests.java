@@ -52,6 +52,17 @@ public class APITests {
 	  	.body("updatedAt", containsString(""));
   }
   
+  @Test
+  public void verfiesCanPutMorpheus() {
+	  given()
+	  .when()
+	  	.put("https://reqres.in/api/users/2")
+	  .then()
+	  	.assertThat()
+	  	.statusCode(200)
+	  	.body("updatedAt", containsString(""));
+  }
+  
   @BeforeTest
   public void beforeTest() {
   }
