@@ -9,11 +9,10 @@ import org.testng.annotations.BeforeTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 
-public class DynamicControls extends TestBase{
+public class DynamicControlsTest extends TestBase{
   @Test
   public void verfiesCheckboxLoads() {
 	  //Arrange
-	  //boolean isCheckBoxPresent;
 	  //Act
 	  boolean isCheckboxPresent = new DynamicControlsPage(driver, baseURL)
 			  .navigate()
