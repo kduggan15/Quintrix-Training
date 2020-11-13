@@ -1,6 +1,9 @@
 package RestAssuredTests.tests;
 
 import org.testng.annotations.Test;
+
+import io.restassured.path.json.JsonPath;
+
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.AfterTest;
 
@@ -61,6 +64,20 @@ public class APITests {
 	  	.assertThat()
 	  	.statusCode(200)
 	  	.body("updatedAt", containsString(""));
+  }
+  
+  public void deserializeUser() {
+	  String j = given()
+			  .when()
+			  	.get("https://reqres.in/api/users/2")
+			  .then()
+			  .log()
+			  .all().extract().path("$");
+	  
+  }
+  
+  public void deserializeUsers() {
+	  
   }
   
   @BeforeTest
