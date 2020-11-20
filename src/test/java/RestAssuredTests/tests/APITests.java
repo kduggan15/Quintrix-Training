@@ -2,9 +2,12 @@ package RestAssuredTests.tests;
 
 import org.testng.annotations.Test;
 
+import com.google.gson.Gson;
+
 import io.restassured.path.json.JsonPath;
 
 import org.testng.annotations.BeforeTest;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 
 import static io.restassured.RestAssured.*;
@@ -66,6 +69,7 @@ public class APITests {
 	  	.body("updatedAt", containsString(""));
   }
   
+  @Test
   public void deserializeUser() {
 	  String j = given()
 			  .when()
@@ -73,7 +77,7 @@ public class APITests {
 			  .then()
 			  .log()
 			  .all().extract().path("$");
-	  
+	  Assert.assertEquals(j, "");
   }
   
   public void deserializeUsers() {
