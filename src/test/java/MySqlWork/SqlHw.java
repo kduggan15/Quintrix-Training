@@ -81,7 +81,40 @@ public class SqlHw {
 			Connection con = DriverManager.getConnection(url, user, this.password);
 			con.setAutoCommit(false);
 			Statement st = con.createStatement();
-			st.executeQuery("INSERT INTO city(city, country_id) VALUES('New City', 103);");
+			//Problem 8
+			st.executeUpdate("INSERT INTO city(city, country_id) VALUES('New City', 103);");
+			st.executeQuery("SET @city_id = (SELECT LAST_INSERT_ID());");
+			
+			st.executeUpdate("INSERT INTO address(address, city_id, district, phone, location)\n"
+					+ "VALUES ('543 South Main Street', @city_id, 'New City', '845-227-4669', ST_GeomFromText('POINT(1 1)'));");
+			st.executeQuery("SET @store_address_id = (SELECT LAST_INSERT_ID());");
+			
+			st.executeUpdate("INSERT INTO address(address, city_id, district, phone, location)\n"
+					+ "VALUES ('14 Congers Road', @city_id, 'New City', '845-709-1123', ST_GeomFromText('POINT(1 1)'));");
+			st.executeQuery("SET @staff_address_id = (SELECT LAST_INSERT_ID());");
+			
+			st.executeUpdate("INSERT INTO sakila.staff(first_name, last_name,username, address_id, email, store_id)\n"
+					+ "VALUES('John','Rearden','johnr12',@staff_address_id, 'johnrearden@sakila.com',1);");
+			st.executeQuery("SET @staff_id = (SELECT LAST_INSERT_ID());");
+			
+			st.executeUpdate("INSERT INTO sakila.store(manager_staff_id, address_id)\n"
+					+ "VALUES(@staff_id, @store_address_id);");
+			st.executeQuery("SET @store_id = (SELECT LAST_INSERT_ID());");
+			
+			st.executeUpdate("UPDATE sakila.staff SET store_id=@store_id\n"
+					+ "WHERE staff_id=@staff_id;");
+			
+			//Problem 9
+			st.executeUpdate("UPDATE sakila.store SET last_update=CURRENT_TIMESTAMP()\n"
+					+ "WHERE store_id=@store_id;");
+			
+			//Problem 10
+			st.executeUpdate("UPDATE sakila.staff SET store_id=1\n"
+					+ "WHERE staff_id=@staff_id;");
+			st.executeUpdate("DELETE FROM sakila.store\n"
+					+ "WHERE store_id=@store_id;");
+			//st.executeQuery("");
+			//st.executeQuery("");
 			con.rollback();
 
 		} catch (SQLException ex) {
