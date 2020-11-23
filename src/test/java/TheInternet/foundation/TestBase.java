@@ -15,7 +15,7 @@ public class TestBase {
   
   @BeforeTest
   public void beforeTest() {
-	  driver = new ChromeDriver();
+	  
 	  HashMap<String,String> configs = null;
 	  try {
 		  configs = new ConfigurationReader().getPropertiesFromResourceFile("config.properties");
@@ -24,6 +24,9 @@ public class TestBase {
 		  throw new RuntimeException(e+"Config file does not exist");
 	  }
 	  this.baseURL = configs.get("url");
+	  
+	  DriverFactory driverFactory = new DriverFactory();
+	  this.driver = driverFactory.getDriver("Chrome");
   }
 
   @AfterTest
