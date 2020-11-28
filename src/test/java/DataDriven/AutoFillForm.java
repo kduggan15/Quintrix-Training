@@ -159,10 +159,8 @@ private List<FormModelObject> getFormObjectFromXML() {
 		Document doc = dBuilder.parse(resource.getFile());
 		doc.getDocumentElement().normalize();
 		NodeList nList = doc.getElementsByTagName("person");
-		System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 		for(int i=0; i<nList.getLength();i++) {
 			Node n = nList.item(i);
-			System.out.println("\nCurrent Element :" + n.getNodeName());
 			if(n.getNodeType() == Node.ELEMENT_NODE) {
 				Element e = (Element) n;
 				String first = e.getElementsByTagName("f_name").item(0).getTextContent();
@@ -198,7 +196,6 @@ private List<FormModelObject> getFormObjectFromCSV() {
 		  String[] values = null;
 		  csvReader.readNext();
 		  while ((values = csvReader.readNext()) != null) {
-			  System.out.println(values[0]+values[2]+values[9]+values[8]);
 			  String first = values[0].split(",")[1];
 			  String last = values[0].split(",")[0];
 			  String email = values[2];
