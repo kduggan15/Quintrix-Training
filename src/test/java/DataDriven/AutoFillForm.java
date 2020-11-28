@@ -11,16 +11,24 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
 import DataDriven.framework.FormModelObject;
+import TheInternet.foundation.ConfigurationReader;
 import TheInternet.foundation.TestBase;
 
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -31,6 +39,15 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 
 public class AutoFillForm extends TestBase{
+	
+	@DataProvider (name = "data-provider")
+	public Object[][] dpMethod(){
+		return new Object[][] {
+			{new FormModelObject("John", "Bender", "lsr@bclub.com",  "male", "2135557613")},
+			{new FormModelObject("Greg", "Doe", "Doe@gmail.com",  "male", "1800343555")}
+		};
+	}
+	
   @Test
   public void Test1() {
 	  //Arrange
@@ -48,6 +65,18 @@ public class AutoFillForm extends TestBase{
 	  }
 	  
   }
+  @Test (dataProvider = "data-provider")
+  public void Test2(FormModelObject expectedFormObject) {
+	  String url = "https://the-internet.herokuapp.com/";
+	  FormModelObject actualFormObject = new FormPage(driver,url)
+			  .navigate()
+			  .fillForm(expectedFormObject)
+			  .submit()
+			  .getResults();
+	  //Assert
+	  Assert.assertTrue(actualFormObject.equals(expectedFormObject));
+  }
+  
   @Test
   public void Test3() {
 	  //Arrange
@@ -66,7 +95,60 @@ public class AutoFillForm extends TestBase{
 	  
   }
   
-  private List<FormModelObject> getFormObjectFromXML() {
+  @Test
+  public void Test4() {
+	  //Arrange
+	  String url = "https://the-internet.herokuapp.com/";
+	  List<FormModelObject> expectedFormObjects = getFormObjectFromSQL();
+	  //Act
+	  for(FormModelObject expectedFormObject: expectedFormObjects) {
+		  FormModelObject actualFormObject = new FormPage(driver,url)
+				  .navigate()
+				  .fillForm(expectedFormObject)
+				  .submit()
+				  .getResults();
+		  //Assert
+		  Assert.assertTrue(actualFormObject.equals(expectedFormObject));
+	  }
+  }
+  
+  private List<FormModelObject> getFormObjectFromSQL() {
+	  List<FormModelObject> studentObjects = new ArrayList<FormModelObject>();
+	  
+	  HashMap<String,String> configs = null;
+	  try {
+		  configs = new ConfigurationReader().getPropertiesFromResourceFile("config.properties");
+	  } catch (IOException e) {
+		  //e.printStackTrace();
+		  throw new RuntimeException(e+"Config file does not exist");
+	  }
+
+	  String url = "jdbc:mysql://localhost:3306/world_x?allowPublicKeyRetrieval=true&useSSL=false";
+	  String user = "root";
+	  String password = configs.get("dbpass");
+	  
+	  String query = "SELECT first_name,last_name,isMale,phone FROM students;";
+	  try {
+		  Connection con = DriverManager.getConnection(url, user, password);
+		  Statement st = con.createStatement();
+		  ResultSet rs = st.executeQuery(query);
+		  while (rs.next()) {
+			  String first = rs.getString(1);
+			  String last = rs.getString(2);
+			  String email = "nomail@no.com";
+			  String gender = rs.getBoolean(3) ? "male":"female";
+			  String number = rs.getString(4).replace("-", "");
+			  studentObjects.add(new FormModelObject(first, last, email,  gender, number));
+		  }
+
+	  } catch (SQLException ex) {
+		  System.out.println(ex);
+	  } 
+
+	  return studentObjects;
+}
+
+private List<FormModelObject> getFormObjectFromXML() {
 	List<FormModelObject> studentObjects = new ArrayList<FormModelObject>();
 	
 	
